@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Color Palette Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Dynamic Color Palette Generator</h1>
+    </header>
+    <main>
+        <div id="color-palette" class="color-palette">
+            
+        </div>
+        <div class="controls">
+            <button id="generate-palette">Generate New Palette</button>
+            <button id="save-palette">Save Palette</button>
+        </div>
+        <div id="saved-palettes" class="saved-palettes">
+            <h2>Saved Palettes</h2>
+            <!-- Saved palettes will be dynamically added here -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Dynamic Color Palette Generator. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
