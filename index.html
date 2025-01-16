@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Color Palette Generator</title>
+    <title>Color Palette Generator</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -15,22 +15,22 @@
             <h1><i class="fas fa-palette"></i> Color Palette Generator</h1>
         </header>
         <main>
-            <div id="color-palette" class="color-palette">
+            <section id="color-palette" class="color-palette">
                 <!-- Color swatches will be dynamically added here -->
-            </div>
-            <div class="controls">
+            </section>
+            <section class="controls">
                 <button id="generate-palette" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Generate New Palette</button>
                 <button id="save-palette" class="btn btn-secondary"><i class="fas fa-save"></i> Save Palette</button>
-            </div>
-            <div id="saved-palettes" class="saved-palettes">
+            </section>
+            <section id="saved-palettes" class="saved-palettes">
                 <h2><i class="fas fa-bookmark"></i> Saved Palettes</h2>
                 <div id="saved-palettes-grid" class="saved-palettes-grid">
                     <!-- Saved palettes will be dynamically added here -->
                 </div>
-            </div>
+            </section>
         </main>
         <footer>
-            <p>&copy; 2025 Color Palette Generator. All rights reserved. Created by <a href="https://github.com/klintech" target="_blank">klintech</a>.</p>
+            <p>&copy; 2023 Color Palette Generator. Made with <i class="fas fa-heart"></i> by You</p>
         </footer>
     </div>
     <script src="script.js"></script>
