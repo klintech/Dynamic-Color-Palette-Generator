@@ -42,24 +42,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function savePalette() {
-        const paletteName = prompt('Enter a name for this palette:');
+        let paletteName = prompt('Enter a name for this palette:');
         if (!paletteName) return;
 
+        let savedPalettes = JSON.parse(localStorage.getItem('savedPalettes')) || [];
+        const originalName = paletteName;
+        let counter = 1;
+
+        // Check for existing palette names and modify the name if necessary
+        while (savedPalettes.some(palette => palette.name === paletteName)) {
+            paletteName = `${originalName} (${counter})`;
+            counter++;
+        }
+
+        const paletteData = {
+            name: paletteName,
+            colors: currentPalette.map(color => color.hex())
+        };
+
+        // Save to local storage
+        savedPalettes.push(paletteData);
+        localStorage.setItem('savedPalettes', JSON.stringify(savedPalettes));
+
+        displaySavedPalette(paletteData);
+        showNotification('Palette saved!');
+    }
+
+    function displaySavedPalette(paletteData) {
         const paletteContainer = document.createElement('div');
         paletteContainer.classList.add('saved-palette');
 
         const paletteColors = document.createElement('div');
         paletteColors.classList.add('saved-palette-colors');
 
-        currentPalette.forEach(color => {
+        paletteData.colors.forEach(colorHex => {
             const swatch = document.createElement('div');
             swatch.classList.add('saved-palette-color');
-            swatch.style.backgroundColor = color.hex();
-            swatch.title = `${color.name()} - ${color.hex()}`;
+            swatch.style.backgroundColor = colorHex;
+            swatch.title = colorHex;
 
             swatch.addEventListener('click', () => {
-                navigator.clipboard.writeText(color.hex());
-                showNotification(`Copied ${color.hex()} to clipboard!`);
+                navigator.clipboard.writeText(colorHex);
+                showNotification(`Copied ${colorHex} to clipboard!`);
             });
 
             paletteColors.appendChild(swatch);
@@ -70,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const paletteNameElement = document.createElement('span');
         paletteNameElement.classList.add('saved-palette-name');
-        paletteNameElement.textContent = paletteName;
+        paletteNameElement.textContent = paletteData.name;
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-palette');
@@ -78,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteButton.addEventListener('click', () => {
             paletteContainer.style.opacity = 0;
             setTimeout(() => savedPalettesGrid.removeChild(paletteContainer), 300);
+            removePaletteFromStorage(paletteData.name);
         });
 
         paletteInfo.appendChild(paletteNameElement);
@@ -88,6 +113,19 @@ document.addEventListener('DOMContentLoaded', () => {
         savedPalettesGrid.appendChild(paletteContainer);
 
         setTimeout(() => paletteContainer.style.opacity = 1, 50);
+    }
+
+    function removePaletteFromStorage(paletteName) {
+        let savedPalettes = JSON.parse(localStorage.getItem('savedPalettes')) || [];
+        savedPalettes = savedPalettes.filter(palette => palette.name !== paletteName);
+        localStorage.setItem('savedPalettes', JSON.stringify(savedPalettes));
+    }
+
+    function loadSavedPalettes() {
+        const savedPalettes = JSON.parse(localStorage.getItem('savedPalettes')) || [];
+        savedPalettes.forEach(paletteData => {
+            displaySavedPalette(paletteData);
+        });
     }
 
     function showNotification(message) {
@@ -106,12 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     generateButton.addEventListener('click', generatePalette);
-    saveButton.addEventListener('click', () => {
-        savePalette();
-        showNotification('Palette saved!');
-    });
+    saveButton.addEventListener('click', savePalette);
+
+    // Load saved palettes on page load
+    loadSavedPalettes();
 
     // Generate initial palette
     generatePalette();
 });
-
